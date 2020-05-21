@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Animal Crossing Item Exchange</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500&family=Zilla+Slab:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="overlay login-overlay">
+	<div class="overlay-card login-card">
+		<div class="login-card__content">
+			<form id="friend-code-form">
+				<label for="login__friend-code">Enter your friend code</label>
+				<input id="login__friend-code" type="text" placeholder="SW-1234-1234-1234-1234" required pattern="SW-\d{4}-\d{4}-\d{4}" title="The pattern is SW-####-####-####">
+				<button id="submit-friend-code">Enter</button>
+			</form>
+			<form id="name-form">
+				<label for="login__name">Enter your name</label>
+				<input id="login__name" type="text" placeholder="Villager" title="Use letters, numbers, spaces, dashes, and/or parentheses" required pattern="\w[\w\s\-\(\)]+" maxlength="40">
+				<button id="submit-name">Enter</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="overlay item-overlay" id="item-overlay">
+	<div class="overlay-card item-overlay__card" id="item-overlay-content">
+		<!-- js populates this content -->
+	</div>
+</div>
+
+<div class="overlay profile-overlay" id="profile-overlay">
+	<div class="overlay-card profile-overlay__card" id="profile-overlay-content">
+		<!-- js populates this content -->
+	</div>
+</div>
+
+<div class="body-content-wrapper">
+
+	<div>
+		<header>
+			<div class="logo-container">
+				<span class="logo-icon">
+					<svg viewBox="0 0 38 34"><path fill="currentColor" fill-rule="evenodd" d="M31.519 26.545c.02-.206.027-.41.02-.609-.053-1.681-.71-3.193-1.848-4.258a6.178 6.178 0 00-4.547-1.64 6.402 6.402 0 00-1.369.217c-.457-.48-1.55-1.078-2.775-1.197a33.689 33.689 0 001.555-1.754c1.668.125 3.878.722 5.188 1.532 4.635 2.868 4.01 5.871 4.548 5.944.538.072.962-4.571-3.698-7.408-1.518-.924-3.257-1.354-4.908-1.486a56.59 56.59 0 001.183-1.604c1.852-.069 4.16.417 6.04 1.924 2.405 1.928 2.764 3.928 3.23 4.001.467.073.18-3.245-2.584-5.456-1.3-1.04-3.13-1.948-5.685-1.917.485-.722.918-1.399 1.286-1.994.924-.122 2.722.198 3.896.856C32.984 12.778 35 15.186 35 18.752c0 3.015-1.168 5.573-3.481 7.793m-11.425-2.95c-.355-.52-.983-1.031-2.094-1.225a41.967 41.967 0 001.93-1.724c.92.043 1.681.418 2.07.77a6.034 6.034 0 00-1.906 2.18m2.662 7.54c-.935.239-2.338.325-3.864.325-7.844 0-13.473-1.79-15.892-2.836 1.471-1.603 2.962-4.747 3.876-11.24C8.325 7.1 15.361 5 18.416 4.92c4.287-.112 7.839 2.044 8.584 5.266a46.969 46.969 0 01-1.383 2.04c-.39-2.174-2.182-4.035-3.534-4.796-1.609-.907-4.213-1.478-6.137-1.116-1.78.335-.977.662.075.767 2.096.21 3.463.573 5.164 1.674 2.413 1.56 3.077 3.627 3.275 5.017a44.779 44.779 0 01-1.41 1.711c-1.386-6.02-6.91-7.513-10.845-6.659-1.865.405-1.266.73.075.698 4.063-.099 8.234 1.437 9.551 7.308-.48.509-.96.995-1.441 1.46-1.127-5.022-6.306-7.69-10.804-6.259-1.224.39-.345.558.15.558 3.61 0 8.317 1.711 9.28 6.971a42.462 42.462 0 01-1.871 1.561c-.65-4.127-4.905-6.603-8.757-5.534-.433.12-.74.353-.748.488-.013.194.531.144.973.14 2.545-.025 6.416 1.28 7.202 5.91-.662.48-1.313.922-1.947 1.33-.541-3.588-3.521-4.552-5.994-4.032-.912.192-.745.338-.683.417.075.097.232.079.824.203 2.329.487 4.167 1.103 4.387 4.313a43.31 43.31 0 01-2.26 1.238c-.178-1.91-1.929-2.512-2.951-2.407-1.816.187-.56.545-.15.697 1.292.478 1.766 1.092 1.693 2.397-2.795 1.304-4.606 1.809-4.537 2.065.095.353 2.18.2 5.346-1.011 1.224.224 2.05.766 2.362 1.5.362.847.175 1.464.375 1.603.2.14.677-.274.823-1.185.259-1.618-.713-2.435-1.726-2.69.626-.287 1.28-.61 1.96-.973 2.607.79 3.83 2.443 4.18 4.36.423 2.3.95.838 1.049 0 .232-1.954-.99-4.714-3.559-5.31a41.28 41.28 0 002-1.283c2.222.206 2.927 1.295 3.15 2.006a5.98 5.98 0 00-.105 1.112c0 2.061 1 3.69 2.704 4.66M32.883 10.43c-1.098-.582-2.692-1.01-4.012-.98 1.307-1.87 3.135-3.78 5.503-6.13.17-.17.285-.418-.053-.575-.635-.372-3.28-2.203-3.886-2.62-.43-.296-.54-.004-.587.256-.45 2.21-1.26 5.031-2.412 7.478-1.084-3.07-5.325-5.34-9.376-5.283-2.27.032-5.331.422-8.276 3.098-2.812 2.556-4.969 6.249-5.55 11.191-.593 5.052-1.29 7.986-2.877 10.642-.218.364-.916 1.174-1.245 1.523-.183.195-.134.411.091.583.282.215 1.033.642 1.857.993 2.256.963 8.967 2.932 16.463 2.817 5.956-.091 8.258-2.03 8.16-2.171-.098-.141-.343-.122-1.545-.435-2.154-.561-3.907-2.28-3.907-4.285 0-2.431 1.858-4.283 4.417-4.403 1.303-.062 2.482.313 3.32 1.054.812.718 1.422 1.747 1.462 2.916.02.593-.02 1.375-.368 2.183-.582 1.35-1.102 1.714-.955 1.902.147.187 1.51.097 3.234-1.127C35.858 26.558 38 23.262 38 19.108c0-4.316-2.622-7.359-5.117-8.68"></path></svg>
+				</span>
+				<span class="logo-text">ACNH Item Exchange</span>
+			</div>
+			<div class="login-status-container">
+				<button class="button button--brown login-button hide-when-logged-in">Sign In</button>
+				<div class="user-status-container show-when-logged-in">
+					<div class="current-user-name"></div>
+					<button class="button button--brown logout-button">Sign Out</button>
+				</div>
+			</div>
+		</header>
+
+		<section class="filters">
+			<div class="filter" id="categories"></div>
+			<div class="filter" id="statuses"></div>
+			<div class="search-container">
+				<div class="filter-title">Search:</div>
+				<input id="search-bar" class="search" type="text" placeholder="Search" autocomplete="off">
+			</div>
+		</section>
+		<section class="pagination">
+			<div class="page-info"></div>
+			<div class="page-buttons"></div>
+		</section>
+		<section class="item-grid" id="item-grid"></section>
+		<section class="pagination">
+			<div class="page-info"></div>
+			<div class="page-buttons"></div>
+		</section>
+	</div>
+
+	<footer>
+		<div class="footer-title">Credits</div>
+		App made by <a href="https://codepen.io/yaphi1/" target="_blank">Yaphi</a>, not for commercial use
+		<br>Public-domain data pulled from <a href="https://github.com/jefflomacy/villagerdb#license" target="_blank">@jefflomacy's villagerDB repo</a>
+		<br>Leaf imagery modified from the <a href="https://www.animal-crossing.com/new-horizons/" target="_blank">ACNH official website</a>
+		<br>Emoji favicon trick courtesy of <a href="https://twitter.com/LeaVerou/status/1241619866475474946" target="_blank">Lea Verou</a>
+	</footer>
+
+</div>
+
+<script src="./airtable.js"></script>
+<script src="./data.js"></script>
+<script>
+/*
+The item data was pulled from this public-domain database:
+https://github.com/jefflomacy/villagerdb/tree/master/data
+
+I then wrote a node script to filter the item data and generate
+a unified json file with only the data I needed.
+In this case, that meant first checking if the item was available
+in New Horizons and then getting each item's name, category, and id.
+
+Once I had the json I wanted, I used a JSON to CSV converter:
+https://json-csv.com/
+
+...so that I could upload the data to Airtable.
+On Airtable, I could associate each item with people who wanted it and people
+who were prepared to offer it.
+
+I ran over my free trial allowance on Airtable, so I had to change
+how I handled the item data.
+
+I realized the item data I needed was the size of a relatively small image,
+so I loaded it into memory from a js file and only used Airtable to
+keep track of the list of people.
+This approach kept me well within the limits of Airtable's free tier.
+*/
+
+/*
+To do:
+	- add close buttons instead of just clicking outside modal
+	- add info for whether DIY is available
+		- check if each item has a recipe key like this:
+			- https://github.com/jefflomacy/villagerdb/blob/master/data/items/acorn-pochette.json
+
+Not to do:
+	- consider button to copy wishlist for sharing (and offer list)
+		- copy([...app.currentUser.seeking].join('\n'))
+	- put filters in URL (later; actually maybe not; user ids might not be great for sharing)
+	- consider list view and results per page (later/never)
+	- add item color preferences (nope; puts too much extra work on users)
+
+Done:
+	- filter by category [done]
+		- filter by multiple categories [done]
+		- get "All" to work (and decide on UX) [done]
+	- filter by seeking vs giving [done]
+	- search [done]
+	- Since the item data is now only the size of an ordinary image, load data into memory so I don't have to query the db on each relevant interaction [done]
+	- refactor to avoid having things out of control when you get to logins [done]
+	- pagination
+	  - numbered buttons [done]
+		- Next and Prev buttons [done]
+		- Reset page index to zero when changing any filter outside of pagination [done]
+		- See why "next" starts about four items away from page 2 [done]
+		- highlight and disable current page button (and hide next and prev buttons when necessary) [declined]
+	- Only re-render when items have actually changed [done]
+	- Get seeking vs giving from database and update item data on load [done]
+	- username entry (use friend code, then add name as extra info)
+		- requirements:
+			- unique
+			- easy to remember
+			- no passwords
+			- can't use sensitive info
+			- convenient
+	- buttons for seeking vs giving
+	- Fix logged-out state [done]
+		- Add checks for user
+		- If someone tries to click one of the item buttons, bring up the login and return early
+	- Add filters for your wishlist and your giving list [done]
+	- Add overlay for item click so you can see who has what you're looking for [done]
+	- Remove numbered page buttons and add wayfinder text instead [done]
+	- Make it so users will only see certain buttons when logged in [done]
+	- Rate-limit database operations [done]
+	- Search is so prominent that categories go missing. Change visual hierarchy
+	- Style login
+	- Style item overlay
+	- Make responsive (v1)
+	- Add items not found message
+	- make footer section with credits
+	- Add profile overlay for people's lists
+
+*/
+
+const base = require('airtable');
+
+const helpers = {
+	debounce: function(fn, delay) {
+		let timeout;
+		return (...args) => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => {
+				fn(...args);
+			}, delay);
+		}
+	},
+
+	cleanString: function(string) {
+		return string.trim().toLowerCase().replace(/[\.']/g, '').replace(/\s+/g, ' ');
+	},
+
+	clone: function(obj) {
+		return JSON.parse(JSON.stringify(obj));
+	},
+
+	isEqual: function(obj1, obj2) {
+		return JSON.stringify(obj1) === JSON.stringify(obj2);
+	}
+};
+
+class App {
+	constructor({
+		base,
+		items,
+		categories,
+		filters,
+		elements,
+	}) {
+		Object.assign(this, arguments[0]);
+		this.filteredItems = [];
+		this.people = {};
+		this.currentUser = null;
+	}
+
+	start() {
+		console.log('starting');
+
+		this.items = this.items.map(item => new Item(item));
+		this.filteredItems = this.items;
+
+		this.getPeople().then(() => {
+			this.prepareLogin();
+			this.addLoginListeners();
+			this.renderFilters();
+			this.addSearchListener();
+			this.renderPagination();
+			this.renderItems();
+			this.addItemOverlayListeners();
+			this.addProfileOverlayListeners();
+		});
+	}
+
+
+	// ***************************************************************
+	// ITEM GRID
+	// ***************************************************************
+
+	renderItems = () => {
+		this.elements.itemGrid.innerHTML = '';
+		for (let i=this.startingIndex; i<this.endingIndex; i++) {
+			this.filteredItems[i].render({destination: this.elements.itemGrid});
+		}
+		this.updateItemLinks();
+		this.updateCheckboxes();
+		const isItemListEmpty = this.filteredItems.length === 0;
+		if (isItemListEmpty) {
+			this.showResultsNotFound();
+		}
+	}
+
+	showResultsNotFound = () => {
+		const messageContainer = document.createElement('div');
+		messageContainer.classList.add('items-not-found');
+		messageContainer.innerHTML = `
+			Hmm... looks like we didn't find anything this time!
+			<br>Have you checked your filters?
+		`;
+		this.elements.itemGrid.innerHTML = '';
+		this.elements.itemGrid.appendChild(messageContainer);
+	}
+
+	setAvailabilityOfItems() {
+		Object.values(this.people).forEach( person => {
+			person.offering.forEach( offeredItem => {
+				const item = this.items.find(item => item.name === offeredItem);
+				item.offering.add(person.id);
+			});
+			person.seeking.forEach( wantedItem => {
+				const item = this.items.find(item => item.name === wantedItem);
+				item.seeking.add(person.id);
+			});
+		});
+	}
+
+	updateItemLinks() {
+		const itemLinks = this.elements.itemGrid.querySelectorAll('.item-name, .button--item-info');
+		itemLinks.forEach( itemLink => {
+			const itemName = itemLink.getAttribute('data-item-name');
+			const item = this.items.find(item => item.name === itemName);
+			itemLink.addEventListener('click', () => {
+				this.showItemOverlay(item);
+			});
+		});
+	}
+
+
+	// ***************************************************************
+	// ITEM OVERLAY
+	// ***************************************************************
+
+	showItemOverlay = (item) => {
+		this.elements.itemOverlay.classList.add('overlay--show');
+		const content = `
+			<div>
+				<img src="${item.generateImageUrl()}" alt="${item.name}">
+			</div>
+			<div>
+				<div class="item-overlay__name">${item.name}</div>
+				<div class="item-overlay__seeking-title">Seeking:</div>
+				<div class="item-overlay__seeking">${[...item.seeking].map(userId => this.people[userId].name).join(', ') || 'No one'}</div>
+				<div class="item-overlay__offering-title">Offering:</div>
+				<div class="item-overlay__offering">${[...item.offering].map(userId => this.people[userId].name).join(', ') || 'No one'}</div>
+			</div>
+		`;
+		this.elements.itemOverlayContent.innerHTML = content;
+	}
+
+	hideItemOverlay = () => {
+		this.elements.itemOverlay.classList.remove('overlay--show');
+	}
+
+	clickOutsideToCloseItemOverlay = (e) => {
+		if (e.target === this.elements.itemOverlay) {
+			this.hideItemOverlay();
+		}
+	}
+
+	addItemOverlayListeners() {
+		this.elements.itemOverlay.addEventListener('click', this.clickOutsideToCloseItemOverlay);
+	}
+
+
+	// ***************************************************************
+	// PROFILE OVERLAY
+	// ***************************************************************
+
+	showProfileOverlay = () => {
+		this.elements.profileOverlay.classList.add('overlay--show');
+		const content = `
+			<div class="profile-overlay__title">
+				${this.currentUser.name}'s Lists
+			</div>
+			<div class="profile-overlay__lists">
+				<div class="profile-overlay__list">
+					<div class="profile-overlay__list-title">Seeking:</div>
+					<div class="profile-overlay__seeking">${[...this.currentUser.seeking].join('<br>') || 'Nothing'}</div>
+				</div>
+				<div class="profile-overlay__list">
+					<div class="profile-overlay__list-title">Offering:</div>
+					<div class="profile-overlay__offering">${[...this.currentUser.offering].join('<br>') || 'Nothing'}</div>
+				</div>
+			</div>
+		`;
+		this.elements.profileOverlayContent.innerHTML = content;
+	}
+
+	hideProfileOverlay = () => {
+		this.elements.profileOverlay.classList.remove('overlay--show');
+	}
+
+	clickOutsideToCloseProfileOverlay = (e) => {
+		if (e.target === this.elements.profileOverlay) {
+			this.hideProfileOverlay();
+		}
+	}
+
+	addProfileOverlayListeners() {
+		this.elements.profileOverlay.addEventListener('click', this.clickOutsideToCloseProfileOverlay);
+		this.elements.currentUserName.addEventListener('click', this.showProfileOverlay);
+	}
+
+
+	// ***************************************************************
+	// USERS
+	// ***************************************************************
+
+	getPeople() {
+		const self = this;
+		return new Promise((resolve, reject) => {
+			base('People').select().eachPage(function page(records, fetchNextPage) {
+				records.forEach(self.registerPersonFromDatabaseRecord);
+				fetchNextPage();
+			}, function done(err) {
+				if (err) { console.error(err); return; }
+				console.log('database loaded');
+				self.setAvailabilityOfItems();
+				resolve();
+			});
+		});
+	}
+
+	registerPersonFromDatabaseRecord = (record) => {
+		const id = record.id;
+		const friendCode = record.get('Friend Code');
+		const name = record.get('Name');
+		const seeking = new Set( record.get('Seeking') );
+		const offering = new Set( record.get('Offering') );
+		this.people[id] = new Person({id, friendCode, name, seeking, offering});
+	}
+
+	setCurrentUser(id) {
+		this.currentUser = this.people[id];
+	}
+
+	addLoginListeners() {
+		this.elements.loginButton.addEventListener('click', this.showLoginOverlay);
+		this.elements.logoutButton.addEventListener('click', this.logout);
+		this.elements.friendCodeForm.addEventListener('submit', this.submitLogin);
+		this.elements.nameForm.addEventListener('submit', this.submitName);
+		this.elements.loginOverlay.addEventListener('click', this.clickOutsideToCloseLogin);
+	}
+
+	showLoginOverlay = () => {
+		this.elements.loginOverlay.classList.add('overlay--show');
+	}
+
+	hideLoginOverlay = () => {
+		this.elements.loginOverlay.classList.remove('overlay--show');
+		this.hideNameEntry();
+	}
+
+	clickOutsideToCloseLogin = (e) => {
+		if (e.target === this.elements.loginOverlay) {
+			this.hideLoginOverlay();
+		}
+	}
+
+	submitLogin = (e) => {
+		e.preventDefault();
+		const friendCode = this.elements.friendCodeInput.value;
+		this.formEntries.friendCode = friendCode;
+		const user = Object.values(this.people).find(item => item.friendCode === friendCode);
+		if (user) {
+			this.login(user.id);
+		}
+		else if (!user) {
+			this.showNameEntry();
+		}
+	}
+
+	submitName = (e) => {
+		e.preventDefault();
+		this.formEntries.name = this.elements.nameInput.value;
+		this.createAccount(this.formEntries.friendCode, this.formEntries.name);
+	}
+
+	showNameEntry() {
+		this.elements.loginOverlay.classList.add('login-overlay--create-account');
+	}
+
+	hideNameEntry() {
+		this.elements.loginOverlay.classList.remove('login-overlay--create-account');
+	}
+
+	createAccount(friendCode, name) {
+		base('People').create([{
+			'fields': {
+				'Friend Code': friendCode,
+				'Name': name,
+			},
+		}],
+		(err, records) => {
+			if (err) { console.error(err); return; }
+			const id = records[0].getId();
+			this.people[id] = new Person({id, friendCode, name});
+			this.login(id);
+		});
+	}
+
+	prepareLogin() {
+		const id = window.localStorage.getItem('userId');
+		if (id) { this.login(id); }
+	}
+
+	login(id) {
+		this.setCurrentUser(id);
+		window.localStorage.setItem('userId', id);
+		this.showUserName(id);
+		this.renderFilters();
+		this.renderItems();
+		this.hideLoginOverlay();
+		this.showLoggedInElements(true);
+		this.showLoggedOutElements(false);
+	}
+
+	logout = () => {
+		this.currentUser = null;
+		window.localStorage.removeItem('userId');
+		this.elements.currentUserName.innerText = '';
+		this.changeItemStatus('All');
+		this.renderFilters();
+		this.showLoggedInElements(false);
+		this.showLoggedOutElements(true);
+	}
+
+	showLoggedInElements(shouldShow) {
+		document.querySelectorAll('.show-when-logged-in').forEach(element => {
+			element.classList.toggle('show-when-logged-in--show', shouldShow);
+		});
+	}
+
+	showLoggedOutElements(shouldShow) {
+		document.querySelectorAll('.hide-when-logged-in').forEach(element => {
+			element.classList.toggle('hide-when-logged-in--hide', !shouldShow);
+		});
+	}
+
+	showUserName(id) {
+		const name = this.people[id].name;
+		this.elements.currentUserName.innerText = name;
+	}
+
+
+	// ***************************************************************
+	// UPDATE USER'S ITEM LISTS
+	// ***************************************************************
+
+	addToDatabase = helpers.debounce(
+		({id, key, value}) => {
+			const self = this;
+
+			base('People').find(id, function(err, record) {
+				if (err) { console.error(err); return; }
+
+				const valueSet = new Set(record.get(key));
+				valueSet.add(value);
+				const values = Array.from( valueSet );
+
+				// update values locally
+				self.people[id][key.toLowerCase()] = valueSet;
+				const currentItem = self.items.find(item => item.name===value);
+				currentItem[key.toLowerCase()].add(record.id);
+
+				// update values in db
+				base('People').update([{
+					id,
+					"fields": {
+						[key]: values,
+					}
+				}], function(err, records) {
+					if (err) { console.error(err); return; }
+				});
+			});
+		},
+	1000)
+
+	removeFromDatabase = helpers.debounce(
+		({id, key, value}) => {
+			const self = this;
+
+			base('People').find(id, function(err, record) {
+				if (err) { console.error(err); return; }
+
+				const valueSet = new Set(record.get(key));
+				valueSet.delete(value);
+				const values = Array.from( valueSet );
+
+				// update values locally
+				self.people[id][key.toLowerCase()] = valueSet;
+				const currentItem = self.items.find(item => item.name===value);
+				currentItem[key.toLowerCase()].delete(record.id);
+
+				// update values in db
+				base('People').update([{
+					id,
+					"fields": {
+						[key]: values,
+					}
+				}], function(err, records) {
+					if (err) { console.error(err); return; }
+				});
+			});
+		},
+	1000)
+
+
+	// ***************************************************************
+	// FILTERS
+	// ***************************************************************
+
+	renderFilters() {
+		this.renderFilterDropdown({
+			title: 'Category',
+			filterType: 'category',
+			targetElement: this.elements.categoryDropdown,
+			menuItems: this.categories,
+		});
+		this.renderFilterDropdown({
+			title: 'Item Status',
+			filterType: 'status',
+			targetElement: this.elements.statusDropdown,
+			menuItems: this.currentUser ? 
+				[`All`, `Available`, `Wanted`, `I'm Offering`, `I'm Seeking`] :
+				[`All`, `Available`, `Wanted`],
+		});
+	}
+
+	filterItems() {
+		const {category, status, searchTerm} = this.filters;
+		const filteredItems = this.items.filter( item => {
+			let shouldShowItem = true;
+			const isItemCategoryExcluded = category && category !== 'All' && category !== item.category;
+			if (isItemCategoryExcluded) { shouldShowItem = false; }
+			if (status === 'Available' && !item.offering.size) { shouldShowItem = false; }
+			if (status === 'Wanted' && !item.seeking.size) { shouldShowItem = false; }
+			if (status === `I'm Offering` && !this.currentUser.offering.has(item.name)) { shouldShowItem = false; }
+			if (status === `I'm Seeking` && !this.currentUser.seeking.has(item.name)) { shouldShowItem = false; }
+			if (searchTerm && !this.itemContainsSearchTerm({item, searchTerm})) { shouldShowItem = false; }
+			return shouldShowItem;
+		});
+		return filteredItems;
+	}
+
+	changeCategory = (category) => {
+		this.filters.category = category;
+		this.elements.categoryDropdown.querySelector('select').value = category;
+		this.filteredItems = this.filterItems();
+		this.renderPagination();
+		this.renderItems();
+	}
+
+	changeItemStatus = (status) => {
+		this.filters.status = status;
+		this.elements.statusDropdown.querySelector('select').value = status;
+		this.filteredItems = this.filterItems();
+		this.renderPagination();
+		this.renderItems();
+	}
+
+	renderFilterDropdown({title, filterType, targetElement, menuItems}) {
+		const self = this;
+		const menu = document.createElement('select');
+		menu.classList.add('filter-dropdown');
+		menu.setAttribute('autocomplete', 'off');
+		menuItems.forEach(menuItem => {
+			const option = document.createElement('option');
+			option.value = menuItem;
+			option.innerText = menuItem;
+			if (menuItem === this.filters[filterType]) { option.selected = true; }
+			menu.appendChild(option);
+		});
+		menu.addEventListener('change', function() {
+			self.filters[filterType] = this.value;
+			if (filterType === 'category') {
+				self.changeCategory(this.value);
+			}
+			if (filterType === 'status') {
+				self.changeItemStatus(this.value);
+			}
+		});
+		targetElement.innerHTML = `<div class="filter-title">${title}:</div><div class="dropdown-container"></div>`;
+		targetElement.querySelector('.dropdown-container').appendChild(menu);
+	}
+
+
+	// ***************************************************************
+	// SEARCH
+	// ***************************************************************
+
+	updateSearchTerm = helpers.debounce(
+		(searchTerm) => {
+			this.filters.searchTerm = searchTerm;
+
+			const previousFilteredItems = helpers.clone(this.filteredItems);
+			this.filteredItems = this.filterItems();
+
+			const haveFilteredItemsChanged = !helpers.isEqual(this.filteredItems, previousFilteredItems);
+
+			if (haveFilteredItemsChanged) {
+				this.renderPagination();
+				this.renderItems();
+			}
+		},
+	250)
+
+	itemContainsSearchTerm({item, searchTerm}) {
+		const itemName = helpers.cleanString(item.name);
+		const keywords = searchTerm.split(' ');
+		for (const keyword of keywords) {
+			if (!itemName.includes(keyword)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	addSearchListener() {
+		const self = this;
+		const targetElement = this.elements.searchBar;
+		targetElement.addEventListener('keyup', function(e) {
+			self.filters.searchTerm = helpers.cleanString(this.value);
+			const keyShouldUpdateSearch = (/^(\w|Backspace| )$/).test(e.key);
+			if (keyShouldUpdateSearch) {
+				self.updateSearchTerm(self.filters.searchTerm);
+			}
+		});
+	}
+
+
+	// ***************************************************************
+	// PAGINATION
+	// ***************************************************************
+
+	get pageCount() {
+		return Math.ceil(this.filteredItems.length / this.filters.itemsPerPage);
+	}
+
+	get startingIndex() {
+		const { itemsPerPage, currentPageIndex } = this.filters;
+		const start = itemsPerPage * currentPageIndex;
+		return start;
+	}
+
+	get endingIndex() {
+		const endOfCompletePage = this.startingIndex + this.filters.itemsPerPage;
+		const endingIndex = Math.min(endOfCompletePage, this.filteredItems.length);
+		return endingIndex;
+	}
+
+	renderPagination = () => {
+		this.filters.currentPageIndex = 0;
+		this.showPageInfo();
+		this.showPageButtons();
+	}
+
+	showPageButtons() {
+		this.elements.pageButtonContainers.forEach(element => {
+			element.innerHTML = '';
+			element.appendChild(this.createPageButtons());
+		});
+	}
+
+	createPageButtons() {
+		const buttons = new DocumentFragment();
+		if (this.pageCount <= 1) { return buttons; }
+		this.showPageInfo();
+		buttons.appendChild(this.createPreviousPageButton());
+		buttons.appendChild(this.createNextPageButton());
+		return buttons;
+	}
+
+	createPreviousPageButton() {
+		const button = document.createElement('button');
+		button.classList.add('button', 'button--brown', 'button--previous');
+		button.innerText = 'Previous Page';
+		button.addEventListener('click', () => {
+			const previousIndex = this.filters.currentPageIndex - 1;
+			const targetPageIndex = Math.max(previousIndex, 0);
+			this.goToPage(targetPageIndex);
+		});
+		return button;
+	}
+
+	createNextPageButton() {
+		const button = document.createElement('button');
+		button.classList.add('button', 'button--brown', 'button--next');
+		button.innerText = 'Next Page';
+		button.addEventListener('click', () => {
+			const nextIndex = this.filters.currentPageIndex + 1;
+			const lastAvailablePageIndex = this.pageCount - 1;
+			const targetPageIndex = Math.min(nextIndex, lastAvailablePageIndex);
+			this.goToPage(targetPageIndex);
+		});
+		return button;
+	}
+
+	goToPage(pageIndex) {
+		this.filters.currentPageIndex = pageIndex;
+		this.showPageInfo();
+		this.renderItems();
+	}
+
+	showPageInfo() {
+		let message = '';
+		if (this.filteredItems.length > 0) {
+			message = `Showing results: ${this.startingIndex+1}-${this.endingIndex} of ${this.filteredItems.length}`;
+		}
+		this.elements.pageInfoContainers.forEach(element => {
+			element.innerHTML = message;
+		});
+	}
+
+
+	// ***************************************************************
+	// CHECKBOXES
+	// ***************************************************************
+
+	updateCheckboxes() {
+		const checkboxes = this.elements.itemGrid.querySelectorAll('.availability-checkbox');
+		checkboxes.forEach( checkbox => {
+			this.setCheckboxState(checkbox);
+			this.addCheckboxListener(checkbox);
+		});
+	}
+
+	setCheckboxState(checkbox) {
+		if (!this.currentUser) { return; }
+		const key = checkbox.getAttribute('data-key');
+		const value = checkbox.value;
+		checkbox.checked = this.currentUser[key.toLowerCase()].has(value);
+	}
+
+	addCheckboxListener(checkbox) {
+		checkbox.addEventListener('change', this.respondToItemCheckboxChange(checkbox));
+	}
+
+	respondToItemCheckboxChange = (checkbox) => {
+		return () => {
+			if (!this.currentUser) {
+				checkbox.checked = false;
+				this.showLoginOverlay();
+				return;
+			}
+			if (checkbox.checked) {
+				this.addToDatabase({id: this.currentUser.id, key: checkbox.getAttribute('data-key'), value: checkbox.value});
+			}
+			else {
+				this.removeFromDatabase({id: this.currentUser.id, key: checkbox.getAttribute('data-key'), value: checkbox.value});
+			}
+		};
+	}
+
+}
+
+
+class Item {
+	constructor({name, category, id, seeking, offering}) {
+		Object.assign(this, arguments[0]);
+		this.seeking = seeking || new Set();
+		this.offering = offering || new Set();
+	}
+
+	render({destination}) {
+		const itemContainer = document.createElement('div');
+		itemContainer.classList.add('item-container');
+		itemContainer.innerHTML = this.generateItemHtml();
+		destination.appendChild(itemContainer);
+	}
+
+	generateItemHtml() {
+		return `
+			<div class="item-buttons--top">
+				<button class="button button--item-info" data-item-name="${this.name}">Info</button>
+			</div>
+			<div class="item-image-container">
+				<img class="item-image" src="${this.generateImageUrl()}" alt="${this.name}">
+			</div>
+			<div class="item-name" data-item-name="${this.name}">${this.name}</div>
+			<div class="item-buttons">
+				<label class="item-button-container offering">
+					<input type="checkbox" class="availability-checkbox" data-key="Offering" value="${this.name}"><span class="item-button">I'm offering</span>
+				</label>
+				<label class="item-button-container seeking">
+					<input type="checkbox" class="availability-checkbox" data-key="Seeking" value="${this.name}"><span class="item-button">I'm seeking</span>
+				</label>
+			</div>
+		`;
+	}
+
+	generateImageUrl() {
+		return `https://villagerdb.com/images/items/medium/${this.id}.png`;
+	}
+}
+
+const app = new App({
+	base,
+	items: __app_data.full_item_list,
+	filteredItems: [],
+	categories: __app_data.full_category_list,
+	filters: {
+		category: 'All',
+		status: 'All',
+		searchTerm: '',
+		itemsPerPage: 52,
+		currentPageIndex: 0,
+	},
+	elements: {
+		itemGrid: document.querySelector('#item-grid'),
+		categoryDropdown: document.querySelector('#categories'),
+		statusDropdown: document.querySelector('#statuses'),
+		searchBar: document.querySelector('#search-bar'),
+		pageInfoContainers: document.querySelectorAll('.page-info'),
+		pageButtonContainers: document.querySelectorAll('.page-buttons'),
+		loginOverlay: document.querySelector('.login-overlay'),
+		currentUserName: document.querySelector('.current-user-name'),
+		loginButton: document.querySelector('.login-button'),
+		logoutButton: document.querySelector('.logout-button'),
+		friendCodeForm: document.querySelector('#friend-code-form'),
+		nameForm: document.querySelector('#name-form'),
+		friendCodeInput: document.querySelector('#login__friend-code'),
+		nameInput: document.querySelector('#login__name'),
+		itemOverlay: document.querySelector('#item-overlay'),
+		itemOverlayContent: document.querySelector('#item-overlay-content'),
+		profileOverlay: document.querySelector('#profile-overlay'),
+		profileOverlayContent: document.querySelector('#profile-overlay-content'),
+	},
+	formEntries: {
+		friendCode: null,
+		name: null,
+	}
+});
+
+
+class Person {
+	constructor({id, friendCode, name, seeking, offering}) {
+		Object.assign(this, arguments[0]);
+		this.seeking = seeking || new Set();
+		this.offering = offering || new Set();
+	}
+}
+
+
+app.start();
+
+</script>
+</body>
+</html>

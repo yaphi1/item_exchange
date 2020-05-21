@@ -1,0 +1,505 @@
+:root {
+	--z-index-overlays: 100;
+	--main-font-color: #6b5c43;
+	--accent-color: #007d75;
+	--background-color: #eaf3f6;
+	--shadow-standard: 0px 10px 20px rgba(0, 0, 0, 0.2);
+	--radius-medium: 8px;
+	--radius-large: 16px;
+	--spacing-standard: 20px;
+}
+body {
+	margin: 0px;
+	font-size: 20px;
+	font-family: "Libre Franklin", sans-serif;
+	color: #333;
+	color: var(--main-font-color);
+	background-color: var(--background-color);
+  background-image: url("https://blinkdash.com/codepen-assets/blue_leaves.png");
+  background-attachment: fixed;
+}
+
+.body-content-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	min-height: 100vh;
+}
+
+.filters {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: var(--spacing-standard);
+	background-color: #f8f6f0;
+	padding: var(--spacing-standard);
+	padding-bottom: 24px;
+	margin: var(--spacing-standard) 0px;
+	border: 3px solid #dcdcdc;
+	border-left: none;
+	border-right: none;
+	box-shadow: var(--shadow-standard);
+}
+.filter {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+.filter-title {
+	font-family: "Zilla Slab", sans-serif;
+	font-size: 18px;
+	margin-bottom: 4px;
+}
+.dropdown-container {
+	--dropdown-arrow-height: 6px;
+	--dropdown-arrow-width: 10px;
+
+	position: relative;
+	background-color: #fff;
+	transition: all 0.2s;
+}
+.dropdown-container:hover {
+	background-color: gold;
+}
+.dropdown-container::after {
+	content: '';
+	pointer-events: none;
+	display: block;
+	border: var(--dropdown-arrow-height) solid transparent;
+	border-top-color: transparent;
+	border-top-style: none;
+	border-top-width: var(--dropdown-arrow-width);
+	border-top: var(--dropdown-arrow-height) solid #ddd;
+	position: absolute;
+	right: var(--spacing-standard);
+	top: calc(50% - var(--dropdown-arrow-height) / 2);
+}
+
+.filter-dropdown,
+.search {
+	width: 100%;
+	box-sizing: border-box;
+	padding: var(--spacing-standard);
+	border: none;
+	color: var(--main-font-color);
+	font-family: "Zilla Slab", sans-serif;
+	font-size: 18px;
+}
+.filter-dropdown, .search {
+	font-size: min(max(18px, calc(1.125rem + ((1vw - 7.68px) * 3.5461))), 28px);
+	min-height: 0vw;
+}
+
+
+.filter-dropdown {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	padding-right: calc(2 * var(--spacing-standard) + var(--dropdown-arrow-width));
+	background-color: transparent;
+}
+.search-container {
+	grid-column-start: 3;
+	grid-column-end: 5;
+	grid-column: span 2;
+}
+.search {
+	background-color: #fff;
+}
+
+.item-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: var(--spacing-standard);
+	margin: var(--spacing-standard);
+}
+.item-container {
+	border: 1px solid #eee;
+	padding: var(--spacing-standard);
+	background-color: #fff;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	box-shadow: var(--shadow-standard);
+	opacity: 1;
+	transform: scale(1);
+	animation: grow-and-fade-in 0.3s;
+}
+.item-container--hidden {
+	transform: scale(0.9);
+	opacity: 0;
+}
+.item-container .item-name {
+	cursor: pointer;
+	font-family: "Zilla Slab", sans-serif;
+}
+.item-container .item-name:hover {
+	text-decoration: underline;
+}
+.items-not-found {
+	grid-column: 1 / -1;
+	text-align: center;
+	margin-top: 80px;
+	line-height: 1.5;
+	font-family: "Zilla Slab", sans-serif;
+	font-size: 30px;
+	opacity: 1;
+	transform: scale(1);
+	animation: grow-and-fade-in 0.3s;
+}
+
+@keyframes grow-and-fade-in {
+	from {
+		transform: scale(0.9);
+		opacity: 0;
+	}
+}
+
+.item-image-container {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: var(--spacing-standard);
+}
+.item-buttons {
+	margin-top: var(--spacing-standard);
+	display: flex;
+	justify-content: space-between;
+}
+.item-button-container {
+	position: relative;
+}
+.item-button {
+	--button-padding: 10px;
+	--icon-size: 10px;
+	--icon-thickness: 2px;
+	--icon-color: #aaa;
+
+	padding: var(--button-padding);
+	background-color: #eee;
+	border: none;
+	border-radius: 3px;
+	font-size: 16px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	position: relative;
+	transition: all 0.2s;
+	font-family: "Zilla Slab", sans-serif;
+}
+.item-button:hover {
+	background-color: gold;
+}
+.item-button::before {
+	content: '';
+	width: var(--icon-size);
+	height: var(--icon-thickness);
+	margin-right: var(--button-padding);
+	background-color: var(--icon-color);
+	display: block;
+}
+.item-button::after {
+	content: '';
+	width: var(--icon-thickness);
+	height: var(--icon-size);
+	background-color: var(--icon-color);
+	display: block;
+	position: absolute;
+	left: calc(var(--button-padding) + (var(--icon-size) / 2) - (var(--icon-thickness) / 2));
+	top: calc(50% - var(--icon-size) / 2);
+}
+.item-button-container > input {
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+}
+.item-button-container > input:checked + .item-button {
+	background-color: var(--accent-color);
+	color: #fff;
+}
+.pagination {
+	margin: var(--spacing-standard);
+}
+
+.overlay {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.8);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: var(--z-index-overlays);
+	opacity: 0;
+	transition: opacity 0.5s;
+	pointer-events: none;
+	box-sizing: border-box;
+	padding: var(--spacing-standard);
+}
+
+.overlay--show {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.overlay-card {
+	background-color: #fff;
+	padding: 40px;
+	box-sizing: border-box;
+	max-height: 100%;
+	overflow: auto;
+}
+
+.item-overlay__card {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	grid-gap: var(--spacing-standard);
+	width: 600px;
+	max-width: 100%;
+}
+.item-overlay__name {
+	font-family: "Zilla Slab", sans-serif;
+	font-size: 30px;
+}
+.item-overlay__seeking-title {
+	font-family: "Zilla Slab", sans-serif;
+	margin-top: var(--spacing-standard);
+}
+.item-overlay__seeking {}
+.item-overlay__offering-title {
+	font-family: "Zilla Slab", sans-serif;
+	margin-top: var(--spacing-standard);
+}
+.item-overlay__offering {}
+
+.login-card__content {
+	position: relative;
+}
+
+#friend-code-form {
+	transition: opacity 0.5s;
+}
+
+#name-form {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.5s;
+	position: absolute;
+	width: 100%;
+	left: 0px;
+	top: 0px;
+}
+.login-card {
+	width: 600px;
+	max-width: 100%;
+}
+.login-overlay--create-account #friend-code-form {
+	opacity: 0;
+	pointer-events: none;
+}
+.login-overlay--create-account #name-form {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.login-overlay label,
+.login-overlay input,
+.login-overlay button {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: "Zilla Slab", sans-serif;
+}
+.login-overlay label {
+	font-size: 30px;
+	margin-bottom: 8px;
+}
+.login-overlay input {
+	border: 1px solid #eee;
+	padding: var(--spacing-standard);
+	font-size: var(--spacing-standard);
+	background-color: #fff;
+	margin-bottom: var(--spacing-standard);
+}
+.login-overlay button {
+	border: none;
+	padding: var(--spacing-standard);
+	font-size: var(--spacing-standard);
+	background-color: #eee;
+	transition: all 0.3s;
+	cursor: pointer;
+}
+.login-overlay button:hover {
+	background-color: lightgreen;
+}
+
+.show-when-logged-in {
+	display: none;
+}
+.show-when-logged-in--show {
+	display: var(--intended-display-value);
+}
+.hide-when-logged-in--hide {
+	display: none;
+}
+
+header {
+	padding: var(--spacing-standard) var(--spacing-standard) 0px;
+	text-align: right;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.logo-container {
+	font-size: 40px;
+	font-family: "Zilla Slab", sans-serif;
+	display: flex;
+	align-items: center;
+}
+.logo-icon {
+	--logo-size: 80px;
+	width: var(--logo-size);
+	height: var(--logo-size);
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 50%;
+	margin-right: 17px;
+	border: 3px solid #e8e8e8;
+}
+.logo-icon svg {
+	width: 100%;
+	display: block;
+}
+.logo-icon path {
+	/*fill: #00bfad;*/
+	fill: currentColor;
+}
+.user-status-container {
+	--intended-display-value: flex;
+	align-items: center;
+}
+.current-user-name {
+	margin-right: var(--spacing-standard);
+}
+.button {
+	--button-padding: 10px var(--spacing-standard);
+	--icon-size: 10px;
+	--icon-thickness: 2px;
+	--icon-color: #aaa;
+	padding: var(--button-padding);
+	background-color: #eee;
+	border: none;
+	border-radius: 3px;
+	font-size: 16px;
+	cursor: pointer;
+	align-items: center;
+	position: relative;
+	transition: all 0.2s;
+	font-family: "Zilla Slab", sans-serif;
+	color: var(--main-font-color);
+}
+.button:hover {
+	background-color: gold;
+	color: var(--main-font-color);
+}
+.button--brown {
+	background-color: #6b5c43;
+	color: #fff;
+}
+.button--green {
+	background-color: var(--accent-color);
+	color: #fff;
+}
+.button--previous {
+	margin-right: 10px;
+}
+.item-buttons--top {
+	text-align: right;
+}
+.pagination {
+	text-align: right;
+}
+.page-info {
+	font-size: 16px;
+	margin-bottom: 4px;
+}
+
+
+
+.current-user-name {
+	cursor: pointer;
+	transition: all 0.3s;
+}
+.current-user-name:hover {
+	text-decoration: underline;
+}
+
+.profile-overlay__title {
+	font-family: "Zilla Slab", sans-serif;
+	font-size: 30px;
+	margin-bottom: 10px;
+}
+.profile-overlay__lists {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: var(--spacing-standard);
+}
+.profile-overlay__list-title {
+	font-family: "Zilla Slab", sans-serif;
+}
+
+
+
+@media (max-width: 1260px) {
+	.item-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+@media (max-width: 950px) {
+	.item-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+@media (max-width: 800px) {
+	.filters {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.logo-icon {
+		--logo-size: 70px;
+  }
+	.logo-text {
+		display: none;
+	}
+}
+@media (max-width: 645px) {
+	.item-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+footer {
+	padding: var(--spacing-standard);
+	padding-bottom: calc(var(--spacing-standard) + 6px);
+	font-size: 14px;
+	background-color: rgba(255,255,255,0.6);
+	box-shadow: var(--shadow-standard);
+	text-align: center;
+	line-height: 1.4;
+}
+.footer-title {
+	font-family: "Zilla Slab", sans-serif;
+	font-size: 18px;
+	margin-bottom: 4px;
+}
+footer a {
+	color: #00998b;
+}
+footer a:hover {
+	color: #00bfad;
+}
+
